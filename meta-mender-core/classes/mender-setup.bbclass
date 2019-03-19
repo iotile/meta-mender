@@ -96,6 +96,14 @@ MENDER_DATA_PART_SIZE_MB_DEFAULT = "128"
 MENDER_BOOT_PART_SIZE_MB ??= "${MENDER_BOOT_PART_SIZE_MB_DEFAULT}"
 MENDER_BOOT_PART_SIZE_MB_DEFAULT = "16"
 
+# Set the fstab options for mounting the data partition
+MENDER_DATA_PART_FSTAB_OPTS ??= "${MENDER_DATA_PART_FSTAB_OPTS_DEFAULT}"
+MENDER_DATA_PART_FSTAB_OPTS_DEFAULT = "default"
+
+# Set any extra options for creating the data partition
+MENDER_DATA_PART_FSOPTS ??= "${MENDER_DATA_PART_FSOPTS_DEFAULT}"
+MENDER_DATA_PART_FSOPTS_DEFAULT = ""
+
 # For performance reasons, we try to align the partitions to the SD card's erase
 # block (PEB). It is impossible to know this information with certainty, but one
 # way to find out is to run the "flashbench" tool on your SD card and study the
