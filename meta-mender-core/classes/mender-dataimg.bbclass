@@ -2,9 +2,21 @@
 # filesystem.
 
 IMAGE_CMD_dataimg() {
-    dd if=/dev/zero of="${WORKDIR}/data.${MENDER_DATA_PART_FSTYPE}" count=0 bs=1M seek=${MENDER_DATA_PART_SIZE_MB}
-    mkfs.${MENDER_DATA_PART_FSTYPE} -F "${WORKDIR}/data.${MENDER_DATA_PART_FSTYPE}" -d "${IMAGE_ROOTFS}/data" -L data "${MENDER_DATA_PART_FSOPTS}"
-    install -m 0644 "${WORKDIR}/data.${MENDER_DATA_PART_FSTYPE}" "${IMGDEPLOYDIR}/${IMAGE_NAME}.dataimg"
+    [ ${MENDER_DATA_PART_FSTYPE} = "auto" ] && DATA_FSTYPE=${ARTIFACTIMG_FSTYPE} || DATA_FSTYPE=${MENDER_DATA_PART_FSTYPE}
+    echo $DATA_FSTYPE
+
+    if [ ${DATA_FSTYPE} = "btrfs" ]; then
+        FORCE_FLAG="-f"
+        ROOT_DIR_FLAG="-r"
+    else #Assume ext3/4
+        FORCE_FLAG="-F"
+        ROOT_DIR_FLAG="-d"
+    fi
+
+    dd if=/dev/zero of="${WORKDIR}/data.${DATA_FSTYPE}" count=0 bs=1M seek=${MENDER_DATA_PART_SIZE_MB}
+    mkfs.${DATA_FSTYPE} ${FORCE_FLAG} "${WORKDIR}/data.${DATA_FSTYPE}" \
+        ${ROOT_DIR_FLAG} "${IMAGE_ROOTFS}/data" -L data ${MENDER_DATA_PART_FSOPTS}
+    install -m 0644 "${WORKDIR}/data.${DATA_FSTYPE}" "${IMGDEPLOYDIR}/${IMAGE_NAME}.dataimg"
 }
 IMAGE_CMD_dataimg_mender-image-ubi() {
     mkfs.ubifs -o "${WORKDIR}/data.ubifs" -r "${IMAGE_ROOTFS}/data" ${MKUBIFS_ARGS}
