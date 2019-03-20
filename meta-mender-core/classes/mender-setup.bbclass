@@ -75,7 +75,7 @@ MENDER_DATA_PART_FSTYPE_TO_GEN ??= "${@bb.utils.contains('MENDER_DATA_PART_FSTYP
 
 # Set the fstab options for mounting the data partition
 MENDER_DATA_PART_FSTAB_OPTS ??= "${MENDER_DATA_PART_FSTAB_OPTS_DEFAULT}"
-MENDER_DATA_PART_FSTAB_OPTS_DEFAULT = "default"
+MENDER_DATA_PART_FSTAB_OPTS_DEFAULT = "defaults"
 
 # Set any extra options for creating the data partition
 MENDER_DATA_PART_FSOPTS ??= "${MENDER_DATA_PART_FSOPTS_DEFAULT}"
