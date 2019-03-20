@@ -14,8 +14,12 @@ IMAGE_CMD_dataimg() {
     fi
 
     dd if=/dev/zero of="${WORKDIR}/data.${DATA_FSTYPE}" count=0 bs=1M seek=${MENDER_DATA_PART_SIZE_MB}
-    mkfs.${DATA_FSTYPE} ${FORCE_FLAG} "${WORKDIR}/data.${DATA_FSTYPE}" \
-        ${ROOT_DIR_FLAG} "${IMAGE_ROOTFS}/data" -L data ${MENDER_DATA_PART_FSOPTS}
+    mkfs.${DATA_FSTYPE} \
+        ${FORCE_FLAG} \
+        "${WORKDIR}/data.${DATA_FSTYPE}" \
+        ${ROOT_DIR_FLAG} "${IMAGE_ROOTFS}/data" \
+        -L data \
+        ${MENDER_DATA_PART_FSOPTS}
     install -m 0644 "${WORKDIR}/data.${DATA_FSTYPE}" "${IMGDEPLOYDIR}/${IMAGE_NAME}.dataimg"
 }
 IMAGE_CMD_dataimg_mender-image-ubi() {
