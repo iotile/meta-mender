@@ -176,7 +176,7 @@ EOF
 
     cat >> "$wks" <<EOF
 
-part --source rootfs --rootfs-dir ${IMAGE_ROOTFS}/data --ondisk "$ondisk_dev" --fstype=${MENDER_DATA_PART_FSTYPE} --label data --align $alignment_kb --fixed-size ${MENDER_DATA_PART_SIZE_MB} --mkfs-extraopts='${MENDER_DATA_PART_FSOPTS}'
+part --source rootfs --rootfs-dir ${IMAGE_ROOTFS}/data --ondisk "$ondisk_dev" --fstype=${MENDER_DATA_PART_FSTYPE_TO_GEN} --label data --align $alignment_kb --fixed-size ${MENDER_DATA_PART_SIZE_MB} --mkfs-extraopts='${MENDER_DATA_PART_FSOPTS}'
 bootloader --ptable $part_type
 EOF
 
