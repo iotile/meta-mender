@@ -175,7 +175,7 @@ EOF
     cat >> "$wks" <<EOF
 part --source rootfs --ondisk "$ondisk_dev" --fstype=${ARTIFACTIMG_FSTYPE} --label primary --align $alignment_kb --fixed-size ${MENDER_CALC_ROOTFS_SIZE}k $exclude_path_options
 part --source rootfs --ondisk "$ondisk_dev" --fstype=${ARTIFACTIMG_FSTYPE} --label secondary --align $alignment_kb --fixed-size ${MENDER_CALC_ROOTFS_SIZE}k $exclude_path_options
-part --source rootfs --rootfs-dir ${IMAGE_ROOTFS}/data --ondisk "$ondisk_dev" --fstype=${ARTIFACTIMG_FSTYPE} --label data --align $alignment_kb --fixed-size ${MENDER_DATA_PART_SIZE_MB}
+part --source rootfs --rootfs-dir ${IMAGE_ROOTFS}/data --ondisk "$ondisk_dev" --fstype=${MENDER_DATA_PART_FSTYPE_TO_GEN} --label data --align $alignment_kb --fixed-size ${MENDER_DATA_PART_SIZE_MB} --mkfs-extraopts='${MENDER_DATA_PART_FSOPTS}'
 bootloader --ptable $part_type
 EOF
 
@@ -264,6 +264,7 @@ _MENDER_PART_IMAGE_DEPENDS = " \
     dosfstools-native:do_populate_sysroot \
     mtools-native:do_populate_sysroot \
 "
+_MENDER_PART_IMAGE_DEPENDS += "${@bb.utils.contains('MENDER_DATA_PART_FSTYPE', 'btrfs','btrfs-tools-native:do_populate_sysroot','',d)}"
 
 
 # This is needed because by default 'mender-grub' feature is used on ARM, but
